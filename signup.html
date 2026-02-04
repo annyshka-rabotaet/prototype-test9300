@@ -202,7 +202,7 @@
       </div>
       <h1 id="signup-title">Start a free account</h1>
       <span class="subhead">No credit card required</span>
-      <form>
+      <form id="signupForm">
         <div class="field">
           <label for="email">Enter your work email *</label>
           <input id="email" type="email" placeholder="name@company.com" required />
@@ -229,5 +229,13 @@
         Already have an account? <a href="#">Log in</a>
       </div>
     </div>
+    <script>
+      const signupForm = document.getElementById("signupForm");
+
+      signupForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        window.location.href = "editor1.html";
+      });
+    </script>
   </body>
 </html>

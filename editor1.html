@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Construction Agreement</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+      }
+
+      .app-container {
+        display: flex;
+        height: 100vh;
+        width: 100%;
+      }
+
+      /* Header */
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 10;
+      }
+
+      .header-main {
+        display: flex;
+        align-items: center;
+        height: 56px;
+        padding: 0 16px;
+        gap: 16px;
+      }
+
+      .header-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .doc-icon {
+        width: 36px;
+        height: 36px;
+        background: #0f9d58;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+      }
+
+      .title-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .badge {
+        padding: 2px 8px;
+        font-size: 12px;
+        background: #f3f4f6;
+        border-radius: 4px;
+      }
+
+      .spacer {
+        flex: 1;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        border: 1px solid #d1d5db;
+        background: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background: #f9fafb;
+      }
+
+      .btn-primary {
+        background: #0f9d58;
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .btn-primary:hover {
+        background: #0d8c4f;
+      }
+
+      .icon-btn {
+        padding: 8px;
+        border: none;
+        background: transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-btn:hover {
+        background: #f3f4f6;
+      }
+
+      /* Toolbar */
+      .toolbar {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        padding: 0 16px;
+        gap: 4px;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .toolbar select {
+        padding: 4px 8px;
+        border: none;
+        background: transparent;
+        font-size: 14px;
+      }
+
+      .divider {
+        width: 1px;
+        height: 24px;
+        background: #d1d5db;
+        margin: 0 8px;
+      }
+
+      /* Main content */
+      .main-content {
+        flex: 1;
+        overflow: auto;
+        padding-top: 112px;
+        padding-bottom: 64px;
+      }
+
+      .content-wrapper {
+        max-width: 1024px;
+        margin: 0 auto;
+      }
+
+      .page-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #6b7280;
+      }
+
+      .document {
+        background: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        padding: 64px;
+        min-height: 11in;
+        width: 8.5in;
+      }
+
+      .document h1 {
+        font-size: 36px;
+        margin-bottom: 32px;
+      }
+
+      .document h2 {
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+
+      .document p {
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+
+      .signature-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        margin-bottom: 32px;
+      }
+
+      .signature-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+        border-radius: 4px;
+      }
+
+      .signature-box-contractor {
+        background: #fef7e6;
+        border: 1px solid #f4d799;
+        color: #c98a0c;
+      }
+
+      .signature-box-client {
+        background: #e8eaf6;
+        border: 1px solid #9fa8da;
+        color: #5c6bc0;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 320px;
+        background: white;
+        border-left: 1px solid #e5e7eb;
+        overflow: auto;
+        padding-top: 112px;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.hidden {
+        transform: translateX(100%);
+      }
+
+      .sidebar-content {
+        padding: 16px;
+      }
+
+      .sidebar h2 {
+        font-size: 18px;
+        margin-bottom: 16px;
+      }
+
+      .user-selector {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        margin-bottom: 24px;
+        cursor: pointer;
+      }
+
+      .user-selector:hover {
+        background: #f9fafb;
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        background: #ff6b35;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .user-info {
+        flex: 1;
+      }
+
+      .user-name {
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .user-email {
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .field-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .field-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        background: white;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .field-btn:hover {
+        background: #f9fafb;
+      }
+
+      .field-btn-signature {
+        background: #fef7e6;
+        border-color: #f4d799;
+      }
+
+      .field-btn-signature:hover {
+        background: #fef3d9;
+      }
+
+      .field-label {
+        flex: 1;
+        font-size: 14px;
+      }
+
+      .actions-section {
+        margin-top: 32px;
+      }
+
+      .actions-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .action-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px;
+        background: transparent;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      .action-btn:hover {
+        background: #f9fafb;
+      }
+
+      /* Toggle button */
+      .sidebar-toggle {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        border: 1px solid #d1d5db;
+        border-right: none;
+        border-radius: 8px 0 0 8px;
+        padding: 8px;
+        cursor: pointer;
+        z-index: 5;
+        transition: right 0.3s ease;
+      }
+
+      .sidebar-toggle:hover {
+        background: #f9fafb;
+      }
+
+      .menu-toggle {
+        position: fixed;
+        left: 0;
+        top: 112px;
+        padding: 8px;
+        background: white;
+        border: 1px solid #d1d5db;
+        border-left: none;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+      }
+
+      .menu-toggle:hover {
+        background: #f9fafb;
+      }
+
+      svg {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-main">
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+
+          <div class="header-title">
+            <div class="doc-icon">
+              <svg width="24" height="24" viewBox="0 0 20 25" fill="white">
+                <path
+                  d="M0 25V0H13.75L20 6.24875V25H0ZM11.25 2.5L17.5 8.75H11.25V2.5Z"
+                />
+              </svg>
+            </div>
+            <div class="title-group">
+              <div class="title-row">
+                <span style="font-weight: 500;">Construction Agreement</span>
+                <span class="badge">Draft</span>
+                <button class="icon-btn" style="padding: 4px;">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M1.33333 13.3333V2.66667H6.66667L8 4H14.6667V13.3333H1.33333Z" />
+                  </svg>
+                </button>
+                <button class="icon-btn" style="padding: 4px;">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 22 16"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M0 16V13.2C0 12.6333 0.145833 12.1125 0.4375 11.6375C0.729167 11.1625 1.11667 10.8 1.6 10.55C2.63333 10.0333 3.68333 9.64583 4.75 9.3875C5.81667 9.12917 6.9 9 8 9C9.1 9 10.1833 9.12917 11.25 9.3875C12.3167 9.64583 13.3667 10.0333 14.4 10.55C14.8833 10.8 15.2708 11.1625 15.5625 11.6375C15.8542 12.1125 16 12.6333 16 13.2V16H0ZM18 16V13C18 12.2667 17.7958 11.5625 17.3875 10.8875C16.9792 10.2125 16.4 9.63333 15.65 9.15C16.5 9.25 17.3 9.42083 18.05 9.6625C18.8 9.90417 19.5 10.2 20.15 10.55C20.75 10.8833 21.2083 11.2542 21.525 11.6625C21.8417 12.0708 22 12.5167 22 13V16H18ZM8 8C6.9 8 5.95833 7.60833 5.175 6.825C4.39167 6.04167 4 5.1 4 4C4 2.9 4.39167 1.95833 5.175 1.175C5.95833 0.391667 6.9 0 8 0C9.1 0 10.0417 0.391667 10.825 1.175C11.6083 1.95833 12 2.9 12 4C12 5.1 11.6083 6.04167 10.825 6.825C10.0417 7.60833 9.1 8 8 8Z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+
+          <button class="btn">Invite</button>
+          <button class="btn btn-primary">
+            Review and send
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <select>
+            <option>Editing</option>
+          </select>
+          <div class="divider"></div>
+
+          <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12.1196 9C9.5396 9 7.5426 10.193 6.2706 11.261L2.9996 8V16H11.0256L7.6936 12.679C8.7006 11.864 10.2176 10.991 12.1196 10.991C17.2426 10.991 19.0346 15.798 19.1076 16L20.9996 15.341C20.2246 13.147 17.3706 9 12.1196 9"
+              />
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M11.8804 9C14.4604 9 16.4574 10.193 17.7294 11.261L21.0004 8V16H12.9744L16.3064 12.679C15.2994 11.864 13.7824 10.991 11.8804 10.991C6.7574 10.991 4.9654 15.798 4.8924 16L3.0004 15.341C3.7754 13.147 6.6294 9 11.8804 9"
+              />
+            </svg>
+          </button>
+          <div class="divider"></div>
+
+          <select>
+            <option>Regular text</option>
+          </select>
+          <div class="divider"></div>
+
+          <select>
+            <option>Poppins</option>
+          </select>
+          <div class="divider"></div>
+
+          <select style="width: 64px;">
+            <option>16</option>
+          </select>
+          <div class="divider"></div>
+
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+              <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="19" y1="4" x2="10" y2="4"></line>
+              <line x1="14" y1="20" x2="5" y2="20"></line>
+              <line x1="15" y1="4" x2="9" y2="20"></line>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>
+              <line x1="4" y1="21" x2="20" y2="21"></line>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="4" y1="9" x2="20" y2="9"></line>
+              <line x1="4" y1="15" x2="20" y2="15"></line>
+              <line x1="10" y1="3" x2="8" y2="21"></line>
+              <line x1="16" y1="3" x2="14" y2="21"></line>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+              ></path>
+              <path
+                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+              ></path>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="1"></circle>
+              <circle cx="19" cy="12" r="1"></circle>
+              <circle cx="5" cy="12" r="1"></circle>
+            </svg>
+          </button>
+          <div class="divider"></div>
+
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="17" y1="10" x2="3" y2="10"></line>
+              <line x1="21" y1="6" x2="3" y2="6"></line>
+              <line x1="21" y1="14" x2="3" y2="14"></line>
+              <line x1="17" y1="18" x2="3" y2="18"></line>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 16V18H4V16H20ZM14 13H4V11H14V13ZM20 8H4V6H20V8Z" />
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="10" y1="6" x2="21" y2="6"></line>
+              <line x1="10" y1="12" x2="21" y2="12"></line>
+              <line x1="10" y1="18" x2="21" y2="18"></line>
+              <path d="M4 6h1v4"></path>
+              <path d="M4 10h2"></path>
+              <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 16V18H4V16H20ZM7 9V15L4 12L7 9ZM20 11V13H10V11H20ZM20 6V8H4V6H20Z" />
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 16V18H4V16H20ZM4 9L7 12L4 15V9ZM20 11V13H10V11H20ZM20 6V8H4V6H20Z" />
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="21" y1="10" x2="3" y2="10"></line>
+              <line x1="21" y1="6" x2="3" y2="6"></line>
+              <line x1="21" y1="14" x2="3" y2="14"></line>
+              <line x1="21" y1="18" x2="3" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="main-content">
+        <div class="content-wrapper">
+          <!-- Page info -->
+          <div class="page-info">
+            <span>Construction Agreement</span>
+            <span>·</span>
+            <span>Page 1 of 5</span>
+            <button class="icon-btn" style="padding: 4px;">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="1"></circle>
+                <circle cx="19" cy="12" r="1"></circle>
+                <circle cx="5" cy="12" r="1"></circle>
+              </svg>
+            </button>
+            <button class="icon-btn" style="padding: 4px;">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Document -->
+          <div class="document">
+            <h1>Construction Agreement</h1>
+
+            <p>
+              This Construction Commission Agreement (the "Agreement") is entered
+              into on this day, November 11, 2024, by and between:
+            </p>
+
+            <div class="signature-grid">
+              <div>
+                <p style="margin-bottom: 4px;">
+                  <strong>Sealdocs Construction, Inc.</strong>
+                </p>
+                <p style="margin-bottom: 4px;">123 Builders Lane</p>
+                <p style="margin-bottom: 4px;">Scranton, PA 18501</p>
+                <p style="margin-bottom: 16px;">
+                  (Hereinafter referred to as "Contractor")
+                </p>
+
+                <div class="signature-box signature-box-contractor">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+                    ></path>
+                  </svg>
+                  <span style="font-size: 14px;">Signature</span>
+                </div>
+              </div>
+
+              <div>
+                <p style="margin-bottom: 4px;"><strong>ACME Inc.</strong></p>
+                <p style="margin-bottom: 4px;">100 Industrial Road,</p>
+                <p style="margin-bottom: 4px;">Phoenix, AZ 85001</p>
+                <p style="margin-bottom: 16px;">
+                  (Hereinafter referred to as "Client")
+                </p>
+
+                <div class="signature-box signature-box-client">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+                    ></path>
+                  </svg>
+                  <span style="font-size: 14px;">Signature</span>
+                </div>
+              </div>
+            </div>
+
+            <h2><strong>Recitals</strong></h2>
+
+            <p>
+              Whereas, the Client desires to engage the Contractor for the
+              construction, development, and completion of a project involving
+              the construction of a 50,000-square-foot warehouse and distribution
+              facility (the "Project") to be located at 200 Paper Mill Road,
+              Scranton, PA 18505, including but not limited to all necessary
+              labor, equipment, materials, supplies, permits, inspections, and
+              regulatory approvals required for the full and final completion of
+              the Project in compliance with applicable building codes, zoning
+              laws, safety regulations, and industry best practices; and
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar toggle button -->
+      <button id="sidebarToggle" class="sidebar-toggle" style="right: 320px;">
+        »
+      </button>
+
+      <!-- Menu toggle -->
+      <button class="menu-toggle">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Right sidebar -->
+      <div id="sidebar" class="sidebar">
+        <div class="sidebar-content">
+          <h2>Add fillable fields</h2>
+
+          <!-- User selector -->
+          <div class="user-selector">
+            <div class="avatar">NW</div>
+            <div class="user-info">
+              <div class="user-name">Noah Walker</div>
+              <div class="user-email">noah.walker@sealdocs.com</div>
+            </div>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+
+          <!-- Field types -->
+          <div class="field-list">
+            <button class="field-btn field-btn-signature">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+                ></path>
+              </svg>
+              <span class="field-label">Signature</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity="0.4">
+                <circle cx="9" cy="5" r="1"></circle>
+                <circle cx="9" cy="12" r="1"></circle>
+                <circle cx="9" cy="19" r="1"></circle>
+                <circle cx="15" cy="5" r="1"></circle>
+                <circle cx="15" cy="12" r="1"></circle>
+                <circle cx="15" cy="19" r="1"></circle>
+              </svg>
+            </button>
+
+            <button class="field-btn">
+              <div
+                style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;"
+              >
+                <span style="font-size: 14px; font-weight: 500; color: #374151;">IN</span>
+              </div>
+              <span class="field-label">Initials</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity="0.4">
+                <circle cx="9" cy="5" r="1"></circle>
+                <circle cx="9" cy="12" r="1"></circle>
+                <circle cx="9" cy="19" r="1"></circle>
+                <circle cx="15" cy="5" r="1"></circle>
+                <circle cx="15" cy="12" r="1"></circle>
+                <circle cx="15" cy="19" r="1"></circle>
+              </svg>
+            </button>
+
+            <button class="field-btn">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <span class="field-label">Text field</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity="0.4">
+                <circle cx="9" cy="5" r="1"></circle>
+                <circle cx="9" cy="12" r="1"></circle>
+                <circle cx="9" cy="19" r="1"></circle>
+                <circle cx="15" cy="5" r="1"></circle>
+                <circle cx="15" cy="12" r="1"></circle>
+                <circle cx="15" cy="19" r="1"></circle>
+              </svg>
+            </button>
+
+            <button class="field-btn">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span class="field-label">Date</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity="0.4">
+                <circle cx="9" cy="5" r="1"></circle>
+                <circle cx="9" cy="12" r="1"></circle>
+                <circle cx="9" cy="19" r="1"></circle>
+                <circle cx="15" cy="5" r="1"></circle>
+                <circle cx="15" cy="12" r="1"></circle>
+                <circle cx="15" cy="19" r="1"></circle>
+              </svg>
+            </button>
+
+            <button class="action-btn">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+              <span>Show all</span>
+            </button>
+          </div>
+
+          <!-- Actions -->
+          <div class="actions-section">
+            <h3 class="actions-title">Actions</h3>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <button class="action-btn">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span>Manage recipients</span>
+              </button>
+              <button class="action-btn">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                <span>Add payment form</span>
+              </button>
+              <button class="action-btn">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="4" y1="21" x2="4" y2="14"></line>
+                  <line x1="4" y1="10" x2="4" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12" y2="3"></line>
+                  <line x1="20" y1="21" x2="20" y2="16"></line>
+                  <line x1="20" y1="12" x2="20" y2="3"></line>
+                  <line x1="1" y1="14" x2="7" y2="14"></line>
+                  <line x1="9" y1="8" x2="15" y2="8"></line>
+                  <line x1="17" y1="16" x2="23" y2="16"></line>
+                </svg>
+                <span>Add variables</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Toggle sidebar
+      const sidebar = document.getElementById("sidebar");
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      let sidebarVisible = true;
+
+      sidebarToggle.addEventListener("click", () => {
+        sidebarVisible = !sidebarVisible;
+
+        if (sidebarVisible) {
+          sidebar.classList.remove("hidden");
+          sidebarToggle.style.right = "320px";
+          sidebarToggle.textContent = "»";
+        } else {
+          sidebar.classList.add("hidden");
+          sidebarToggle.style.right = "0";
+          sidebarToggle.textContent = "«";
+        }
+      });
+    </script>
+  </body>
+</html>
