@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pseudo Google</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #ffffff;
+        color: #202124;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      body.show-results {
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+
+      .page {
+        width: 100%;
+        max-width: 960px;
+        padding: 48px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .page.is-hidden {
+        display: none;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo svg {
+        width: min(294px, 56vw);
+        height: auto;
+      }
+
+      .search-wrapper {
+        width: min(640px, 100%);
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        border: 1px solid #dfe1e5;
+        border-radius: 24px;
+        padding: 12px 140px 12px 48px;
+        font-size: 16px;
+        outline: none;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+
+      .search-input:focus {
+        border-color: transparent;
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+      }
+
+      .search-icon,
+      .mic-icon,
+      .ai-mode {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .search-icon,
+      .mic-icon {
+        width: 20px;
+        height: 20px;
+        fill: #9aa0a6;
+      }
+
+
+      .search-icon {
+        left: 16px;
+      }
+
+      .mic-icon {
+        right: 72px;
+      }
+
+      .ai-mode {
+        right: 12px;
+        border: 1px solid #dadce0;
+        background: #ffffff;
+        color: #3c4043;
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 16px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .ai-mode::before {
+        content: "✦";
+        color: #4285f4;
+        font-size: 12px;
+      }
+
+      .ai-mode:hover {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+
+      .suggestions {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(60, 64, 67, 0.2);
+        padding: 10px 0;
+        display: none;
+        z-index: 10;
+      }
+
+      .suggestions.visible {
+        display: block;
+      }
+
+      .suggestion-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 18px;
+        font-size: 14px;
+        color: #202124;
+        border-radius: 16px;
+        margin: 0 8px;
+        cursor: pointer;
+      }
+
+      .suggestion-item strong {
+        font-weight: 600;
+      }
+
+      .suggestion-item:hover {
+        background: #f1f3f4;
+      }
+
+      .results-page {
+        width: 100%;
+        max-width: 1100px;
+        padding: 20px 24px 80px;
+        margin: 0 auto;
+        display: none;
+      }
+
+      .results-page.visible {
+        display: block;
+      }
+
+      .results-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 8px 0 14px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .logo-small {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo-small svg {
+        width: 120px;
+        height: auto;
+      }
+
+      .results-search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        border: 1px solid #dfe1e5;
+        border-radius: 24px;
+        padding: 8px 12px 8px 16px;
+        gap: 10px;
+        box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1);
+      }
+
+      .results-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 15px;
+      }
+
+      .results-icons {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #5f6368;
+      }
+
+      .results-icons svg {
+        width: 20px;
+        height: 20px;
+        fill: #5f6368;
+      }
+
+      .results-divider {
+        width: 1px;
+        height: 20px;
+        background: #dadce0;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 18px;
+        padding: 14px 0;
+        font-size: 13px;
+        color: #5f6368;
+      }
+
+      .tab-active {
+        color: #202124;
+        font-weight: 600;
+        position: relative;
+      }
+
+      .tab-active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -8px;
+        height: 2px;
+        background: #202124;
+      }
+
+      .results-content {
+        display: grid;
+        gap: 24px;
+        padding-top: 12px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .image-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 16px;
+      }
+
+      .image-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 12px;
+        background: #ffffff;
+      }
+
+      .image-placeholder {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #f1f3f4, #e8eaed);
+        margin-bottom: 10px;
+      }
+
+      .ai-overview {
+        border: 1px solid #e0e0e0;
+        border-radius: 16px;
+        padding: 16px;
+        background: #ffffff;
+        display: grid;
+        gap: 10px;
+      }
+
+      .ai-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #1967d2;
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      .result-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .result-main {
+        display: grid;
+        gap: 6px;
+      }
+
+      .result-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #5f6368;
+        font-size: 12px;
+      }
+
+      .result-logo {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #34a853;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 11px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: lowercase;
+      }
+
+      .result-link {
+        color: #202124;
+        font-weight: 600;
+      }
+
+      .result-thumb {
+        width: 96px;
+        height: 96px;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        object-fit: cover;
+      }
+
+      .result-title {
+        color: #1a0dab;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .result-url {
+        color: #006621;
+        font-size: 12px;
+      }
+
+      .result-snippet {
+        color: #5f6368;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .suggestion-icon {
+        width: 18px;
+        height: 18px;
+        fill: #5f6369;
+        flex: 0 0 auto;
+      }
+
+      .suggestion-close {
+        margin-left: auto;
+        width: 16px;
+        height: 16px;
+        fill: #5f6369;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .button {
+        background: #f8f9fa;
+        border: 1px solid #f8f9fa;
+        color: #3c4043;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .button:hover {
+        border-color: #dadce0;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+      }
+
+      .helper {
+        font-size: 13px;
+        color: #5f6368;
+      }
+
+      .helper span {
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="logo" aria-label="Google">
+        <svg
+          width="732"
+          height="228"
+          viewBox="0 0 732 228"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+        >
+          <title>Google</title>
+          <g clip-path="url(#clip0_1_47)">
+            <path
+              d="M189.626 80.579H108.659V104.671H166.088C163.255 138.462 135.22 152.874 108.764 152.874C74.9017 152.874 45.3555 126.16 45.3555 88.7205C45.3555 52.25 73.5232 24.168 108.83 24.168C136.076 24.168 152.132 41.5815 152.132 41.5815L168.959 24.1015C168.959 24.1015 147.351 0 107.965 0C57.809 0 19.013 42.446 19.013 88.293C19.013 133.218 55.5179 177.023 109.239 177.023C156.505 177.023 191.09 144.561 191.09 96.558C191.09 86.4215 189.626 80.5695 189.626 80.5695"
+              fill="#4285F4"
+            />
+            <path
+              d="M256.295 85.4714C272.637 85.4714 288.113 98.7239 288.113 120.07C288.113 140.961 272.703 154.584 256.219 154.584C238.109 154.584 223.821 140.049 223.821 119.909C223.821 100.196 237.938 85.4714 256.295 85.4714ZM255.962 63.1274C222.737 63.1274 198.923 89.1764 198.923 119.557C198.923 150.385 222.024 176.918 256.352 176.918C287.438 176.918 312.897 153.092 312.897 120.222C312.897 82.5359 283.274 63.1274 255.962 63.1274Z"
+              fill="#EB4335"
+            />
+            <path
+              d="M380.355 85.4714C396.687 85.4714 412.173 98.7239 412.173 120.07C412.173 140.961 396.753 154.584 380.269 154.584C362.169 154.584 347.881 140.049 347.881 119.909C347.881 100.196 361.998 85.4714 380.355 85.4714ZM380.022 63.1274C346.787 63.1274 322.983 89.1764 322.983 119.557C322.983 150.385 346.084 176.918 380.402 176.918C411.489 176.918 436.956 153.092 436.956 120.222C436.956 82.5359 407.344 63.1274 380.022 63.1274Z"
+              fill="#FBBC05"
+            />
+            <path
+              d="M503.901 85.4999C518.855 85.4999 534.208 98.2964 534.208 120.156C534.208 142.386 518.893 154.631 503.578 154.631C487.322 154.631 472.188 141.388 472.188 120.365C472.188 98.5244 487.892 85.4999 503.901 85.4999ZM501.696 63.1844C471.199 63.1844 447.224 89.9744 447.224 120.032C447.224 154.28 475.021 176.994 501.173 176.994C517.334 176.994 525.937 170.553 532.288 163.172V174.382C532.288 194.018 520.405 205.77 502.466 205.77C485.126 205.77 476.437 192.85 473.414 185.516L451.616 194.655C459.344 211.052 474.916 228.161 502.646 228.161C532.972 228.161 556.073 209.009 556.073 168.843V66.6139H532.288V76.2469C524.968 68.3429 514.976 63.1844 501.696 63.1844Z"
+              fill="#4285F4"
+            />
+            <path
+              d="M662.84 84.93C673.202 84.93 680.665 90.459 683.84 97.09L633.028 118.38C630.841 101.897 646.413 84.9395 662.84 84.9395V84.93ZM661.852 63.0515C633.085 63.0515 608.929 86.0035 608.929 119.871C608.929 155.705 635.851 176.966 664.618 176.966C688.622 176.966 703.357 163.79 712.15 151.991L692.539 138.909C687.443 146.823 678.944 154.565 664.732 154.565C648.78 154.565 641.441 145.806 636.907 137.323L712.987 105.669L709.042 96.3965C701.684 78.223 684.544 63.0515 661.852 63.0515Z"
+              fill="#EB4335"
+            />
+            <path d="M572.662 173.584H597.645V5.89001H572.671L572.662 173.584Z" fill="#34A853" />
+          </g>
+          <defs>
+            <clipPath id="clip0_1_47">
+              <rect width="732" height="228" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+
+      <form class="search-wrapper" aria-label="Search form">
+        <svg class="search-icon" viewBox="0 -960 960 960" aria-hidden="true">
+          <path
+            d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+          />
+        </svg>
+        <input
+          class="search-input"
+          type="text"
+          name="q"
+          placeholder="Search Google or type a URL"
+          autocomplete="off"
+        />
+        <svg class="mic-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V21h2v-3.07A7 7 0 0 0 19 11z"
+          />
+        </svg>
+        <button class="ai-mode" type="button">AI Mode</button>
+        <div class="suggestions" aria-label="Search suggestions">
+          <div class="suggestion-item" data-query="car rental agreement">
+            <svg class="suggestion-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 8a1 1 0 0 1 1 1v3.5l2.5 1.5-.75 1.3-3.25-1.95V9a1 1 0 0 1 1-1zm0-6a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"
+              />
+            </svg>
+            <span>car rental agreement - Google Search</span>
+            <svg class="suggestion-close" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </div>
+          <div class="suggestion-item" data-query="car rental agreement template">
+            <svg class="suggestion-icon" viewBox="0 -960 960 960" aria-hidden="true">
+              <path
+                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+              />
+            </svg>
+            <span>car rental agreement <strong>template</strong></span>
+          </div>
+          <div class="suggestion-item" data-query="car rental agreement sample">
+            <svg class="suggestion-icon" viewBox="0 -960 960 960" aria-hidden="true">
+              <path
+                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+              />
+            </svg>
+            <span>car rental agreement <strong>sample</strong></span>
+          </div>
+          <div class="suggestion-item" data-query="car rental agreement pdf">
+            <svg class="suggestion-icon" viewBox="0 -960 960 960" aria-hidden="true">
+              <path
+                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+              />
+            </svg>
+            <span>car rental agreement <strong>pdf</strong></span>
+          </div>
+        </div>
+      </form>
+
+      <div class="buttons">
+        <button class="button" type="button">Google Search</button>
+        <button class="button" type="button">I'm Feeling Lucky</button>
+      </div>
+
+      <p class="helper">Type anything in the search bar and press Enter.</p>
+    </main>
+
+    <section class="results-page" aria-label="Search results">
+      <header class="results-header">
+        <div class="logo-small" aria-label="Google">
+          <svg
+            width="732"
+            height="228"
+            viewBox="0 0 732 228"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+          >
+            <title>Google</title>
+            <g clip-path="url(#clip0_1_47)">
+              <path
+                d="M189.626 80.579H108.659V104.671H166.088C163.255 138.462 135.22 152.874 108.764 152.874C74.9017 152.874 45.3555 126.16 45.3555 88.7205C45.3555 52.25 73.5232 24.168 108.83 24.168C136.076 24.168 152.132 41.5815 152.132 41.5815L168.959 24.1015C168.959 24.1015 147.351 0 107.965 0C57.809 0 19.013 42.446 19.013 88.293C19.013 133.218 55.5179 177.023 109.239 177.023C156.505 177.023 191.09 144.561 191.09 96.558C191.09 86.4215 189.626 80.5695 189.626 80.5695"
+                fill="#4285F4"
+              />
+              <path
+                d="M256.295 85.4714C272.637 85.4714 288.113 98.7239 288.113 120.07C288.113 140.961 272.703 154.584 256.219 154.584C238.109 154.584 223.821 140.049 223.821 119.909C223.821 100.196 237.938 85.4714 256.295 85.4714ZM255.962 63.1274C222.737 63.1274 198.923 89.1764 198.923 119.557C198.923 150.385 222.024 176.918 256.352 176.918C287.438 176.918 312.897 153.092 312.897 120.222C312.897 82.5359 283.274 63.1274 255.962 63.1274Z"
+                fill="#EB4335"
+              />
+              <path
+                d="M380.355 85.4714C396.687 85.4714 412.173 98.7239 412.173 120.07C412.173 140.961 396.753 154.584 380.269 154.584C362.169 154.584 347.881 140.049 347.881 119.909C347.881 100.196 361.998 85.4714 380.355 85.4714ZM380.022 63.1274C346.787 63.1274 322.983 89.1764 322.983 119.557C322.983 150.385 346.084 176.918 380.402 176.918C411.489 176.918 436.956 153.092 436.956 120.222C436.956 82.5359 407.344 63.1274 380.022 63.1274Z"
+                fill="#FBBC05"
+              />
+              <path
+                d="M503.901 85.4999C518.855 85.4999 534.208 98.2964 534.208 120.156C534.208 142.386 518.893 154.631 503.578 154.631C487.322 154.631 472.188 141.388 472.188 120.365C472.188 98.5244 487.892 85.4999 503.901 85.4999ZM501.696 63.1844C471.199 63.1844 447.224 89.9744 447.224 120.032C447.224 154.28 475.021 176.994 501.173 176.994C517.334 176.994 525.937 170.553 532.288 163.172V174.382C532.288 194.018 520.405 205.77 502.466 205.77C485.126 205.77 476.437 192.85 473.414 185.516L451.616 194.655C459.344 211.052 474.916 228.161 502.646 228.161C532.972 228.161 556.073 209.009 556.073 168.843V66.6139H532.288V76.2469C524.968 68.3429 514.976 63.1844 501.696 63.1844Z"
+                fill="#4285F4"
+              />
+              <path
+                d="M662.84 84.93C673.202 84.93 680.665 90.459 683.84 97.09L633.028 118.38C630.841 101.897 646.413 84.9395 662.84 84.9395V84.93ZM661.852 63.0515C633.085 63.0515 608.929 86.0035 608.929 119.871C608.929 155.705 635.851 176.966 664.618 176.966C688.622 176.966 703.357 163.79 712.15 151.991L692.539 138.909C687.443 146.823 678.944 154.565 664.732 154.565C648.78 154.565 641.441 145.806 636.907 137.323L712.987 105.669L709.042 96.3965C701.684 78.223 684.544 63.0515 661.852 63.0515Z"
+                fill="#EB4335"
+              />
+              <path d="M572.662 173.584H597.645V5.89001H572.671L572.662 173.584Z" fill="#34A853" />
+            </g>
+            <defs>
+              <clipPath id="clip0_1_47">
+                <rect width="732" height="228" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="results-search">
+          <input class="results-input" type="text" value="car rental agreement" />
+          <div class="results-icons" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+            <div class="results-divider"></div>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V21h2v-3.07A7 7 0 0 0 19 11z"
+              />
+            </svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M11.5 7a4.5 4.5 0 0 1 4.5 4.5v1.2l2.4 2.4c.7.7.2 1.9-.8 1.9h-8.2A3.9 3.9 0 0 1 5.5 13V7.8C5.5 7.36 5.86 7 6.3 7h5.2zm0 2h-3v4a2 2 0 0 0 2 2h5.6l-1.6-1.6V11.5A2.5 2.5 0 0 0 11.5 9z"
+              />
+              <circle cx="16.75" cy="9.25" r="1.25" />
+            </svg>
+            <svg viewBox="0 -960 960 960">
+              <path
+                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </header>
+      <nav class="tabs">
+        <span>AI Mode</span>
+        <span class="tab-active">All</span>
+        <span>Images</span>
+        <span>Videos</span>
+        <span>News</span>
+        <span>Forums</span>
+        <span>More</span>
+        <span>Tools</span>
+      </nav>
+
+      <div class="results-content">
+        <section class="result-item">
+          <div class="result-main">
+            <div class="result-meta">
+              <span class="result-logo">pd</span>
+              <span class="result-link">PandaDoc</span>
+            </div>
+            <div class="result-title">Free Car Rental Agreement Template for Download (Doc, ...</div>
+            <div class="result-url">https://www.pandadoc.com</div>
+            <div class="result-snippet">
+              This car rental agreement template is useful to any car rental, rent-a-car, or other
+              vehicle rental service, and now you can save time and money getting ...
+            </div>
+          </div>
+          <img
+            class="result-thumb"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpGwMMsYbYt-20eW_4dYT_WRYICqpfzCGou4-ucsk&usqp=CAE&s"
+            alt="Car rental agreement template preview"
+          />
+        </section>
+      </div>
+    </section>
+
+    <script>
+      const form = document.querySelector(".search-wrapper");
+      const input = document.querySelector(".search-input");
+      const suggestions = document.querySelector(".suggestions");
+      const suggestionItems = document.querySelectorAll(".suggestion-item");
+      const homePage = document.querySelector(".page");
+      const resultsPage = document.querySelector(".results-page");
+      const resultsInput = document.querySelector(".results-input");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+      });
+
+      input.addEventListener("input", () => {
+        const value = input.value.trim().toLowerCase();
+        if (value.startsWith("c")) {
+          suggestions.classList.add("visible");
+        } else {
+          suggestions.classList.remove("visible");
+        }
+      });
+
+      suggestionItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const query = item.dataset.query || item.textContent.trim();
+          input.value = query;
+          if (resultsInput) {
+            resultsInput.value = query;
+          }
+          suggestions.classList.remove("visible");
+          homePage.classList.add("is-hidden");
+          resultsPage.classList.add("visible");
+          document.body.classList.add("show-results");
+        });
+      });
+
+      input.focus();
+    </script>
+  </body>
+</html>
