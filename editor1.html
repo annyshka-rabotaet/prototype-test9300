@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Construction Agreement</title>
+    <title>Car Rental Agreement</title>
     <style>
+      @import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700,700i&display=swap");
       * {
         margin: 0;
         padding: 0;
@@ -12,7 +13,7 @@
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "IBM Plex Sans", sans-serif;
         background-color: #f8f9fa;
         overflow-x: hidden;
       }
@@ -37,7 +38,7 @@
       .header-main {
         display: flex;
         align-items: center;
-        height: 56px;
+        height: 64px;
         padding: 0 16px;
         gap: 16px;
       }
@@ -76,6 +77,103 @@
         border-radius: 4px;
       }
 
+      .header-subnav {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        height: 40px;
+        padding: 0 16px 0 112px;
+        border-top: 1px solid #eef2f7;
+        font-size: 14px;
+        color: #4b5563;
+      }
+
+      .header-subnav button {
+        border: none;
+        background: transparent;
+        color: inherit;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 4px 2px;
+      }
+
+      .header-subnav button:hover {
+        color: #111827;
+      }
+
+      .menu-dropdown {
+        position: relative;
+      }
+
+      .menu-button {
+        border: 1px solid transparent;
+        border-radius: 6px;
+        padding: 6px 10px;
+        background: #f3f4f6;
+        color: #1f2937;
+      }
+
+      .menu-dropdown-content {
+        position: absolute;
+        top: 36px;
+        left: 0;
+        width: 320px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        padding: 8px 0;
+        display: none;
+        z-index: 20;
+      }
+
+      .menu-dropdown.open .menu-dropdown-content {
+        display: block;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        color: #111827;
+        cursor: pointer;
+      }
+
+      .menu-item:hover {
+        background: #f9fafb;
+      }
+
+      .menu-divider {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 6px 0;
+      }
+
+      .menu-icon {
+        width: 18px;
+        height: 18px;
+        stroke: #9aa0a6;
+        fill: none;
+        stroke-width: 2;
+        flex-shrink: 0;
+      }
+
+      .menu-arrow {
+        margin-left: auto;
+        color: #9ca3af;
+      }
+
+      .menu-badge {
+        margin-left: auto;
+        font-size: 12px;
+        color: #a16207;
+        background: #fef3c7;
+        border-radius: 999px;
+        padding: 2px 8px;
+      }
+
       .spacer {
         flex: 1;
       }
@@ -102,6 +200,23 @@
         gap: 4px;
       }
 
+      .btn-ghost {
+        background: #f5f0e6;
+        border: 1px solid #efe7d7;
+        color: #8a6d3b;
+        font-weight: 600;
+      }
+
+      .btn-ghost:hover {
+        background: #efe7d7;
+      }
+
+      .btn-split {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
       .btn-primary:hover {
         background: #0d8c4f;
       }
@@ -123,26 +238,7 @@
 
       /* Toolbar */
       .toolbar {
-        display: flex;
-        align-items: center;
-        height: 48px;
-        padding: 0 16px;
-        gap: 4px;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .toolbar select {
-        padding: 4px 8px;
-        border: none;
-        background: transparent;
-        font-size: 14px;
-      }
-
-      .divider {
-        width: 1px;
-        height: 24px;
-        background: #d1d5db;
-        margin: 0 8px;
+        display: none;
       }
 
       /* Main content */
@@ -169,54 +265,411 @@
       }
 
       .document {
-        background: white;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         margin: 0 auto;
-        padding: 64px;
-        min-height: 11in;
-        width: 8.5in;
+        max-width: 1110px;
       }
 
-      .document h1 {
-        font-size: 36px;
-        margin-bottom: 32px;
-      }
-
-      .document h2 {
-        font-size: 24px;
-        margin-bottom: 16px;
-      }
-
-      .document p {
-        margin-bottom: 24px;
-        line-height: 1.6;
-      }
-
-      .signature-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 32px;
-        margin-bottom: 32px;
-      }
-
-      .signature-box {
+      .column {
         display: flex;
+        padding: 0 0.81em;
+        flex-direction: column;
+      }
+      .row {
+        margin: 0 -0.81em;
+        display: flex;
+      }
+      .row:not(:last-child) {
+        margin-bottom: 1.63em;
+      }
+      .field {
+        margin: 0;
+        z-index: 100;
+        position: absolute;
+      }
+      .date {
+        display: inline-flex !important;
+        padding: 0.4em 0.4em 0.4em 0.8em;
         align-items: center;
-        gap: 8px;
-        padding: 12px;
-        border-radius: 4px;
+        justify-content: space-between;
       }
-
-      .signature-box-contractor {
-        background: #fef7e6;
-        border: 1px solid #f4d799;
-        color: #c98a0c;
+      .token-input {
+        color: #8d8d8d;
+        width: 100%;
+        display: inline-block;
+        max-width: 12em;
+        background: rgba(249, 236, 192, 0.7);
+        box-shadow: inset 0 0 0 1px #f8d278, 0 0 0 1px rgba(248, 210, 120, 0);
+        line-height: 1;
       }
-
-      .signature-box-client {
-        background: #e8eaf6;
-        border: 1px solid #9fa8da;
-        color: #5c6bc0;
+      .signature {
+        padding: 1.6em 0.8em;
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      .image {
+        height: auto;
+        display: block;
+        max-width: 100%;
+      }
+      .image-d0 {
+        margin: 0 auto;
+      }
+      .image-d1 {
+        margin: 0 auto;
+      }
+      .token {
+        padding: 1px 3px 2px;
+      }
+      .token-empty {
+        background-color: rgba(255, 238, 51, 0.5);
+      }
+      .token-filled {
+        box-shadow: rgb(255 212 0 / 90%) 0px 0px 0px 1px inset;
+      }
+      .absolute-block-wrapper {
+        padding: 6px 8px;
+      }
+      .table-cell {
+        padding: 0.44em;
+      }
+      .table-data-row {
+        color: #000000;
+        font-size: 1em;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        line-height: 1.5;
+        text-transform: unset;
+      }
+      .table-data-row:nth-child(even) {
+        background-color: transparent;
+      }
+      .table {
+        width: 100%;
+        margin-top: 0.5em;
+        break-after: auto;
+        table-layout: fixed;
+        border-collapse: collapse;
+      }
+      .table-d0 .table-cell {
+        border-bottom: 1px dotted #65656f;
+      }
+      .table-d0 .table-cell:not(:last-child) {
+        border-right: 1px dotted #65656f;
+      }
+      .table-d1 .table-cell {
+        border-bottom: 1px dotted #65656f;
+      }
+      .table-d1 .table-cell:not(:last-child) {
+        border-right: 1px dotted #65656f;
+      }
+      .block {
+        position: relative;
+      }
+      .block:not(:last-child) {
+        margin-bottom: 1.63em;
+      }
+      .text-block p {
+        color: #000000;
+        font-size: 1em;
+        margin-top: 0;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        line-height: 1.5;
+        margin-bottom: 0;
+        text-transform: unset;
+        background-color: transparent;
+      }
+      .text-block h1,
+      .text-block h2,
+      .text-block h3,
+      .text-block h4,
+      .text-block h5 {
+        color: #434343;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        font-weight: bold;
+        line-height: 1.25;
+        text-transform: unset;
+      }
+      .text-block h1 {
+        color: #434343;
+        font-size: 1.88em;
+        font-style: normal;
+        margin-top: 0;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        font-weight: bold;
+        line-height: 1.25;
+        margin-bottom: 0;
+        text-transform: uppercase;
+      }
+      .text-block h2 {
+        color: #434343;
+        font-size: 1.5em;
+        font-style: normal;
+        margin-top: 0;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        font-weight: bold;
+        line-height: 1.25;
+        margin-bottom: 0;
+        text-transform: unset;
+      }
+      .text-block h3 {
+        color: #434343;
+        font-size: 0.88em;
+        font-style: normal;
+        margin-top: 0;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0;
+        text-transform: uppercase;
+      }
+      .text-block h4 {
+        color: #434343;
+        font-size: 1.13em;
+        font-style: normal;
+        margin-top: 0;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        font-weight: bold;
+        line-height: 1.25;
+        margin-bottom: 0;
+        text-transform: unset;
+      }
+      .text-block h5 {
+        color: #434343;
+        font-size: 1em;
+        font-style: normal;
+        margin-top: 0;
+        text-align: left;
+        font-family: IBM Plex Sans;
+        font-weight: bold;
+        line-height: 1.25;
+        margin-bottom: 0;
+        text-transform: unset;
+      }
+      .video-block {
+        color: #767676;
+        height: 0;
+        display: block;
+        position: relative;
+        max-width: 100%;
+        background: #f7f7f7;
+        padding-bottom: 56.25%;
+      }
+      .img-block:after {
+        clear: both;
+        content: "";
+        display: table;
+      }
+      .page {
+        inset: 0;
+        margin: 0 auto 10px auto;
+        display: flex;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+        flex-direction: column;
+        background-color: rgba(255, 255, 255, 1);
+      }
+      .page:not(.landscape) {
+        min-height: calc((100vw - 20px) * 1.2941176470588236);
+      }
+      .page.landscape {
+        min-height: calc((100vw - 20px) * 0.7727272727272727);
+      }
+      .page.content {
+        font-size: 12px;
+      }
+      .page.cover {
+        font-size: 9px;
+      }
+      @media (max-width: 1200px) {
+        .page {
+          padding-top: 30px;
+          padding-left: 20px;
+          padding-right: 20px;
+          padding-bottom: 30px;
+        }
+      }
+      @media (min-width: 320px) {
+        .page {
+          padding-top: calc(30px + 35 * ((100vw - 320px) / 880));
+          padding-left: calc(20px + 30 * ((100vw - 320px) / 880));
+          padding-right: calc(20px + 30 * ((100vw - 320px) / 880));
+          padding-bottom: calc(30px + 35 * ((100vw - 320px) / 880));
+        }
+      }
+      @media (min-width: 1200px) {
+        .page {
+          padding-top: 65px;
+          padding-left: 50px;
+          padding-right: 50px;
+          padding-bottom: 65px;
+        }
+      }
+      @media (min-width: 600px) {
+        .page {
+          margin-bottom: 20px;
+        }
+      }
+      .page:before {
+        inset: 0;
+        content: "";
+        opacity: 1;
+        position: absolute;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: top left;
+      }
+      .page p,
+      .page h1,
+      .page h2,
+      .page h3,
+      .page h4,
+      .page h5 {
+        margin: 0;
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+      .page > div {
+        position: relative;
+      }
+      @media (min-width: 320px) {
+        .page.cover {
+          font-size: calc(9px + 7 * ((100vw - 320px) / 880));
+        }
+      }
+      @media (min-width: 1200px) {
+        .page.cover {
+          font-size: 16px;
+        }
+      }
+      @media (min-width: 320px) {
+        .page.content {
+          font-size: calc(12px + 4 * ((100vw - 320px) / 880));
+        }
+      }
+      @media (min-width: 1200px) {
+        .page.content {
+          font-size: 16px;
+        }
+      }
+      @media (min-width: 600px) {
+        .page.landscape {
+          min-height: calc((100vw - 40px) * 0.7727272727272727);
+        }
+      }
+      @media (min-width: 768px) {
+        .page.landscape {
+          min-height: calc((100vw - 40px) * 0.7727272727272727);
+        }
+      }
+      @media (min-width: 960px) {
+        .page.landscape {
+          min-height: calc((72vw - 60px) * 0.7727272727272727);
+        }
+      }
+      @media (min-width: 1200px) {
+        .page.landscape {
+          max-width: 1056px;
+        }
+      }
+      @media (min-width: 1540px) {
+        .page.landscape {
+          min-height: 816px;
+        }
+      }
+      @media (min-width: 600px) {
+        .page:not(.landscape) {
+          min-height: calc((100vw - 40px) * 1.2941176470588236);
+        }
+      }
+      @media (min-width: 768px) {
+        .page:not(.landscape) {
+          min-height: calc((100vw - 40px) * 1.2941176470588236);
+        }
+      }
+      @media (min-width: 960px) {
+        .page:not(.landscape) {
+          min-height: calc((72vw - 60px) * 1.2941176470588236);
+        }
+      }
+      @media (min-width: 1200px) {
+        .page:not(.landscape) {
+          max-width: 816px;
+          min-height: 1056px;
+        }
+      }
+      *,
+      *:after,
+      *:before {
+        box-sizing: border-box;
+      }
+      .page-0 {
+        background-color: rgba(220, 222, 230, 1);
+      }
+      .page-0:before {
+        background-image: url(https://public-site.marketing.pandadoc-static.com/app/uploads/car-rental-agreement-template-1.jpg);
+      }
+      .page-1 {
+        background-color: rgba(254, 254, 255, 1);
+      }
+      .page-1:before {
+        background-opacity: 0.8;
+      }
+      .page-2 {
+        background-color: rgba(254, 254, 255, 1);
+      }
+      .page-2:before {
+        background-opacity: 0.8;
+        background-position: bottom left;
+      }
+      .page-3 {
+        background-color: rgba(254, 254, 255, 1);
+      }
+      .page-3:before {
+        background-size: contain;
+        background-opacity: 0.8;
+        background-position: bottom center;
+      }
+      .page-4 {
+        background-color: rgba(254, 254, 255, 1);
+      }
+      .page-4:before {
+        background-opacity: 0.7;
+        background-position: bottom center;
+      }
+      .page-5 {
+        background-color: rgba(254, 254, 255, 1);
+      }
+      .page-5:before {
+        background-size: contain;
+        background-opacity: 0.6;
+        background-position: top right;
+      }
+      .date-07877d70 {
+        left: 0px;
+        width: 190px;
+        bottom: 1px;
+      }
+      .signature-0b24f6d7 {
+        left: 0px;
+        width: 190px;
+        bottom: 42px;
+      }
+      .date-e1ee1b74 {
+        left: 2px;
+        width: 190px;
+        bottom: 2px;
+      }
+      .signature-e2780157 {
+        left: 2px;
+        width: 190px;
+        bottom: 42px;
       }
 
       /* Sidebar */
@@ -419,62 +872,145 @@
             </div>
             <div class="title-group">
               <div class="title-row">
-                <span style="font-weight: 500;">Construction Agreement</span>
+                <span style="font-weight: 500;">Car Rental Agreement Template</span>
                 <span class="badge">Draft</span>
-                <button class="icon-btn" style="padding: 4px;">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                  >
-                    <path d="M1.33333 13.3333V2.66667H6.66667L8 4H14.6667V13.3333H1.33333Z" />
-                  </svg>
-                </button>
-                <button class="icon-btn" style="padding: 4px;">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 22 16"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M0 16V13.2C0 12.6333 0.145833 12.1125 0.4375 11.6375C0.729167 11.1625 1.11667 10.8 1.6 10.55C2.63333 10.0333 3.68333 9.64583 4.75 9.3875C5.81667 9.12917 6.9 9 8 9C9.1 9 10.1833 9.12917 11.25 9.3875C12.3167 9.64583 13.3667 10.0333 14.4 10.55C14.8833 10.8 15.2708 11.1625 15.5625 11.6375C15.8542 12.1125 16 12.6333 16 13.2V16H0ZM18 16V13C18 12.2667 17.7958 11.5625 17.3875 10.8875C16.9792 10.2125 16.4 9.63333 15.65 9.15C16.5 9.25 17.3 9.42083 18.05 9.6625C18.8 9.90417 19.5 10.2 20.15 10.55C20.75 10.8833 21.2083 11.2542 21.525 11.6625C21.8417 12.0708 22 12.5167 22 13V16H18ZM8 8C6.9 8 5.95833 7.60833 5.175 6.825C4.39167 6.04167 4 5.1 4 4C4 2.9 4.39167 1.95833 5.175 1.175C5.95833 0.391667 6.9 0 8 0C9.1 0 10.0417 0.391667 10.825 1.175C11.6083 1.95833 12 2.9 12 4C12 5.1 11.6083 6.04167 10.825 6.825C10.0417 7.60833 9.1 8 8 8Z"
-                    />
-                  </svg>
-                </button>
               </div>
             </div>
           </div>
 
           <div class="spacer"></div>
 
-          <button class="btn">Invite</button>
-          <button class="btn btn-primary">
-            Review and send
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
+          <button class="btn btn-ghost">Start subscription now</button>
+          <button class="btn btn-split">
+            Invite
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
-          <button class="icon-btn">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
+          <button class="btn btn-primary btn-split">
+            Review and send
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
+          <button class="icon-btn" aria-label="Help">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.82 1c0 2-3 2-3 4"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="header-subnav">
+          <div class="menu-dropdown" id="fileMenu">
+            <button class="menu-button" id="fileMenuButton">File</button>
+            <div class="menu-dropdown-content" id="fileMenuContent">
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                Create new
+                <span class="menu-arrow">›</span>
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 2h9l5 5v15H6z"></path>
+                  <path d="M15 2v6h6"></path>
+                </svg>
+                Convert to Template
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="12"></rect>
+                  <path d="M8 8h12v12H8z"></path>
+                </svg>
+                Make a copy
+              </div>
+              <div class="menu-divider"></div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="14"></rect>
+                  <path d="M7 20h10"></path>
+                </svg>
+                Workflow setup
+                <span class="menu-badge">Try it out</span>
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 17c4-6 8-2 16-10"></path>
+                  <path d="M4 12v7h7"></path>
+                </svg>
+                E-signature and verification
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="8" cy="8" r="3"></circle>
+                  <circle cx="16" cy="8" r="3"></circle>
+                  <path d="M3 20c0-3 2-5 5-5"></path>
+                  <path d="M21 20c0-3-2-5-5-5"></path>
+                </svg>
+                Recipients
+                <span class="menu-arrow">›</span>
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 2h9l5 5v15H6z"></path>
+                  <path d="M15 2v6h6"></path>
+                  <path d="M9 12h6"></path>
+                  <path d="M9 16h6"></path>
+                </svg>
+                Document
+                <span class="menu-arrow">›</span>
+              </div>
+              <div class="menu-divider"></div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 17.5V21h3.5L19 8.5l-3.5-3.5L3 17.5z"></path>
+                  <path d="M14.5 5l3.5 3.5"></path>
+                </svg>
+                Rename
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 7h10"></path>
+                  <path d="M4 11h10"></path>
+                  <path d="M4 15h10"></path>
+                  <path d="M18 7l2 2-2 2"></path>
+                </svg>
+                Move
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="4"></rect>
+                  <rect x="5" y="9" width="14" height="10"></rect>
+                </svg>
+                Archive
+              </div>
+              <div class="menu-divider"></div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12"></path>
+                  <path d="M8 11l4 4 4-4"></path>
+                  <path d="M5 19h14"></path>
+                </svg>
+                Download
+                <span class="menu-arrow">›</span>
+              </div>
+              <div class="menu-item">
+                <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="6" y="3" width="12" height="6"></rect>
+                  <rect x="6" y="13" width="12" height="8"></rect>
+                  <path d="M6 11h12"></path>
+                </svg>
+                Print
+              </div>
+            </div>
+          </div>
+          <button>Edit</button>
+          <button>Insert</button>
+          <button>View</button>
+          <button>Format</button>
         </div>
 
         <!-- Toolbar -->
@@ -690,9 +1226,9 @@
         <div class="content-wrapper">
           <!-- Page info -->
           <div class="page-info">
-            <span>Construction Agreement</span>
+            <span>Car Rental Agreement</span>
             <span>·</span>
-            <span>Page 1 of 5</span>
+            <span>Page 1 of 6</span>
             <button class="icon-btn" style="padding: 4px;">
               <svg
                 width="16"
@@ -724,80 +1260,47 @@
 
           <!-- Document -->
           <div class="document">
-            <h1>Construction Agreement</h1>
-
-            <p>
-              This Construction Commission Agreement (the "Agreement") is entered
-              into on this day, November 11, 2024, by and between:
-            </p>
-
-            <div class="signature-grid">
-              <div>
-                <p style="margin-bottom: 4px;">
-                  <strong>Sealdocs Construction, Inc.</strong>
-                </p>
-                <p style="margin-bottom: 4px;">123 Builders Lane</p>
-                <p style="margin-bottom: 4px;">Scranton, PA 18501</p>
-                <p style="margin-bottom: 16px;">
-                  (Hereinafter referred to as "Contractor")
-                </p>
-
-                <div class="signature-box signature-box-contractor">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
-                    ></path>
-                  </svg>
-                  <span style="font-size: 14px;">Signature</span>
+            <article class="template-document">
+              <div class="page cover page-0">
+                <div class="text-block block" style="position:absolute;top:16.2879%;left:7.7206%;width:84.6814%;height:auto">
+                  <div class="absolute-block-wrapper">
+                    <h1 style="text-align:left"><span style="font-size:2.27em;color:#293249">Car Rental Agreement Template</span></h1>
+                  </div>
+                </div>
+                <div class="text-block block" style="position:absolute;top:83.4280%;left:32.8431%;width:59.8039%;height:auto">
+                  <div class="absolute-block-wrapper">
+                    <p style="text-align:right"><b style="font-family:IBM Plex Sans;color:#293249">Prepared</b><b style="font-family:IBM Plex Sans;color:#293249"> by</b></p>
+                    <p style="text-align:right">​<span style="font-weight:normal;font-family:IBM Plex Sans;color:#293249"><span class="token token-empty">[Sender.FirstName]</span></span>​</p>
+                    <p style="text-align:right">​<span style="font-weight:normal;font-family:IBM Plex Sans;color:#293249"><span class="token token-empty">[Sender.LastName]</span></span>​</p>
+                  </div>
+                </div>
+                <div class="text-block block" style="position:absolute;top:73.2955%;left:31.4951%;width:61.1520%;height:auto">
+                  <div class="absolute-block-wrapper">
+                    <p style="text-align:right"><b style="font-family:IBM Plex Sans;color:#293249">Prepared for</b><br />​<span class="token token-empty">[Client.FirstName]</span><br />​<span class="token token-empty">[Client.LastName]</span>​</p>
+                  </div>
+                </div>
+                <div class="img-block block" style="position:absolute;top:6.7235%;left:8.9461%;width:18.5049%;height:auto">
+                  <img decoding="async" src="./Free Car Rental Agreement Template for Download (Doc, Word), Vehicle Contract Sample - 2023_files/8d6ccf7f0fd34f63b7b4b7514bf43ff9" loading="lazy" class="image image-d0" alt="Image 5" />
+                </div>
+                <div class="img-block block" style="position:absolute;top:74.3371%;left:8.2108%;width:28.9216%;height:auto">
+                  <img decoding="async" src="./Free Car Rental Agreement Template for Download (Doc, Word), Vehicle Contract Sample - 2023_files/b388ef08afb1487091f54d49cc523eda" loading="lazy" class="image image-d1" alt="Image 6" />
                 </div>
               </div>
-
-              <div>
-                <p style="margin-bottom: 4px;"><strong>ACME Inc.</strong></p>
-                <p style="margin-bottom: 4px;">100 Industrial Road,</p>
-                <p style="margin-bottom: 4px;">Phoenix, AZ 85001</p>
-                <p style="margin-bottom: 16px;">
-                  (Hereinafter referred to as "Client")
-                </p>
-
-                <div class="signature-box signature-box-client">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
-                    ></path>
-                  </svg>
-                  <span style="font-size: 14px;">Signature</span>
-                </div>
-              </div>
-            </div>
-
-            <h2><strong>Recitals</strong></h2>
-
-            <p>
-              Whereas, the Client desires to engage the Contractor for the
-              construction, development, and completion of a project involving
-              the construction of a 50,000-square-foot warehouse and distribution
-              facility (the "Project") to be located at 200 Paper Mill Road,
-              Scranton, PA 18505, including but not limited to all necessary
-              labor, equipment, materials, supplies, permits, inspections, and
-              regulatory approvals required for the full and final completion of
-              the Project in compliance with applicable building codes, zoning
-              laws, safety regulations, and industry best practices; and
-            </p>
+              <div class="page content page-1"><div class="text-block block" style="margin-bottom:3.51em"><p><span style="font-size:1.31em">This Car Rental Agreement is entered into between </span><span style="font-size:1.31em"><span class="token token-empty">[Sender.FirstName]</span></span><span style="font-size:1.31em"></span><span style="font-size:1.31em"><span class="token token-empty">[Sender.LastName]</span></span><span style="font-size:1.31em"> (“Owner”) and </span><span style="font-size:1.31em"><span class="token token-empty">[Client.FirstName]</span></span><span style="font-size:1.31em"></span><span style="font-size:1.31em"><span class="token token-empty">[Client.LastName]</span></span><span style="font-size:1.31em"> (“Renter”) (collectively the “Parties”) and outlines the respective rights and obligations of the Parties relating to the rental of a car.</span></p></div><div class="text-block block"><h2>1. Identification of rental vehicle</h2></div><div class="text-block block" style="margin-right:-0.31em;margin-bottom:0.3799999999999999em;margin-left:-0.31em;padding-top:0.31em;padding-right:0.31em;padding-bottom:0.31em;padding-left:0.31em"><p><span style="font-family:IBM Plex Sans">Owner hereby agrees to rent to Renter a passenger vehicle identified as follows:</span></p></div><div class="table-block block"><table class="table table-d0"><colgroup><col width="16.48"><col width="83.52"></colgroup><tbody><tr class="table-data-row"><td class="table-cell"><p><span style="font-weight:normal;font-family:IBM Plex Sans">⚙️ Make</span><b style="font-family:IBM Plex Sans"></b></p></td><td class="table-cell"><p>​</p></td></tr><tr class="table-data-row"><td class="table-cell"><p style="text-align:left"><span style="font-weight:normal;font-family:IBM Plex Sans;">? Model</span><span style="font-family:IBM Plex Sans;"></span></p></td><td class="table-cell"><p>​</p></td></tr><tr class="table-data-row"><td class="table-cell"><p style="text-align:left"><span style="font-weight:normal;font-family:IBM Plex Sans;">? VIN</span><span style="font-family:IBM Plex Sans;"></span></p></td><td class="table-cell"><p>​</p></td></tr><tr class="table-data-row"><td class="table-cell"><p style="text-align:left"><span style="font-weight:normal;font-family:IBM Plex Sans;">? Year </span></p></td><td class="table-cell"><p>​</p></td></tr><tr class="table-data-row"><td class="table-cell"><p style="text-align:left"><span style="font-weight:normal;font-family:IBM Plex Sans;">? Color</span></p></td><td class="table-cell"><p>​</p></td></tr></tbody></table></div><div class="text-block block" style="margin-right:-0.31em;margin-bottom:3.19em;margin-left:-0.31em;padding-top:0.31em;padding-right:0.31em;padding-bottom:0.31em;padding-left:0.31em"><p><span style="font-family:IBM Plex Sans">(hereinafter referred to as “Rental Vehicle”).</span></p></div><div class="text-block block"><h2>2. Rental term </h2></div><div class="text-block block" style="padding-top:0.31em;padding-right:0.31em;padding-bottom:0.31em;padding-left:0.31em"><p style="margin-bottom:1em;margin-top:0;line-height:1.5">The term of this Car Rental Agreement runs from the date and hour of vehicle pickup as indicated just above the signature line at the bottom of this agreement until the return of the vehicle to Owner, and completion of all terms of this agreement by both Parties. The estimated rental term is as follows:</p><p style="margin-bottom:1em;margin-top:0;line-height:1.5">⏱ Estimated start date: </p><p style="margin-bottom:1em;margin-top:0;line-height:1.5">⏱ Estimated end date: </p><p style="margin-bottom:1em;margin-top:0;line-height:1.5">The Parties may shorten or extend the estimate term of rental by mutual consent.</p></div></div>
+              <div class="page content page-2"><div class="text-block block"><h2>3. Scope of use</h2></div><div class="text-block block"><p>Renter will use the Rented Vehicle only for personal or routine business use, and operate 
+the Rented Vehicle only on properly maintained roads and parking lots. Renter will comply with 
+all applicable laws relating to holding licensure to operate the vehicle, and pertaining to operation 
+of motor vehicles.&nbsp;Renter will not sublease the Rental Vehicle or use it as a vehicle for hire. 
+Renter will not take the vehicle location limit.</p></div><div class="text-block block" style="margin-top:-0.31em;margin-right:-0.31em;margin-bottom:0.06999999999999984em;margin-left:-0.31em;padding-top:0.31em;padding-right:0.31em;padding-bottom:0.63em;padding-left:0.31em"><p><span style="font-weight:normal;font-family:IBM Plex Sans;color:#000000">Renter will not allow any other person to operate the Rented Vehicle unless identified here:</span></p></div><div class="table-block block" style="margin-bottom:3.51em"><table class="table table-d1"><colgroup><col width="31.844"><col width="68.156"></colgroup><tbody><tr class="table-data-row"><td class="table-cell"><p>Primary vehicle operator:</p></td><td class="table-cell"><p style="text-align:left"><span style=""> DL #</span></p></td></tr><tr class="table-data-row"><td class="table-cell"><p style="text-align:left">Additional vehicle operator: </p></td><td class="table-cell"><p style="text-align:left"><span style=""> DL #</span></p></td></tr><tr class="table-data-row"><td class="table-cell"><p style="text-align:left"><span style="">Additional vehicle operator: </span></p></td><td class="table-cell"><p style="text-align:left"><span style=""> DL #</span></p></td></tr></tbody></table></div><div class="text-block block"><h2>4. Mileage</h2></div><div class="text-block block" style="margin-bottom:3.51em"><p>Mileage of the Rental Vehicle is mileage at the time of commencement of this Car Rental Agreement. Mileage on the vehicle will be limited <span class="token token-empty">[Mileage.Limitations]</span>. Any mileage on the vehicle in excess of this limitation will be subject to an excess mileage surcharge of <span class="token token-empty">[Excess.Mileage.Fee]</span> per mile.</p></div><div class="text-block block"><h2><span style="color:#434343">5. Rental fees</span></h2></div><div class="text-block block" style="margin-right:-0.31em;margin-left:-0.31em;padding-top:0.31em;padding-right:0.31em;padding-bottom:0.31em;padding-left:0.31em"><p>Renter will pay to Owner rental fees for use of the Rental Vehicle as follows:
+​</p><p>? Base fee: </p><p>​</p><p>⛽️ Fuel:</p><p>​</p><p>Excess mileage fees as set forth in Paragraph 4, above.</p></div></div>
+              <div class="page content page-3"><div class="text-block block"><h2><span style="color:#434343">6. Security deposit</span></h2></div><div class="text-block block" style="margin-bottom:3.19em"><p>Renter will be required to provide a security deposit to Owner in the amount of <span class="token token-empty">[Security.Deposit]</span> dollars (“Security Deposit”) to be used in the event of loss or damage to the Rental Vehicle during the term of this agreement. Owner may, in lieu of collection of a security deposit, place a hold on 
+a credit card in the same amount. &nbsp;In the event of damage to the Rental Vehicle, Owner will apply this Security Deposit to defray the costs of necessary repairs or replacement.&nbsp;If the cost for repair 
+or replacement of damage to the Rental Vehicle exceeds the amount of the Security Deposit, Renter will be responsible for payment to the Owner of the balance of this cost.</p></div><div class="text-block block"><h2><span style="color:#434343">7. Insurance</span></h2></div><div class="text-block block" style="margin-bottom:3.19em"><p>Renter must provide to Owner with proof of insurance that would cover damage to the Rental Vehicle at the time this Car Rental Agreement is signed, as well as personal injury to the Renter, passengers in the Rented Vehicle, and other persons or property. If the Rental Vehicle is damaged or destroyed while it is in the possession of Renter, Renter agrees to pay any required insurance deductible and also assign all rights to collect insurance proceeds to Owner.</p></div><div class="text-block block"><h2><span style="color:#434343">8. Indemnification</span></h2></div><div class="text-block block"><p>Renter agrees to indemnify, defend, and hold harmless the Owner for any loss, damage, or legal actions against Owner as a result of Renter’s operation or use of the Rented Vehicle during the 
+term of this Car Rental Agreement. This includes any attorney fees necessarily incurred for these purposes. Renter will also pay for any parking tickets, moving violations, or other citations received while in possession of the Rented Vehicle.</p></div></div>
+              <div class="page content page-4"><div class="text-block block"><h2><span style="color:#434343">9. Representations and warranties </span></h2></div><div class="text-block block" style="margin-bottom:3.19em"><p style="margin-bottom:1em;margin-top:0;line-height:1.5">Owner represents and warrants that to Owner’s knowledge, the Rental Vehicle is in good condition and is safe for ordinary operation of the vehicle. </p><p style="margin-bottom:1em;margin-top:0;line-height:1.5">Renter represents and warrants that Renter is legally entitled to operate a motor vehicle under the laws of this jurisdiction and will not operate it in violation of any laws, or in any negligent or illegal manner.</p><p style="margin-bottom:1em;margin-top:0;line-height:1.5">Renter has been given an opportunity to examine the Rental Vehicle in advance of taking possession of it, and upon such inspection, is not aware of any damage existing on the vehicle other than that notated by separate Existing Damage document.</p></div><div class="text-block block"><h2><span style="color:#434343">10. Jurisdiction and venue</span></h2></div><div class="text-block block"><p>In the event of any dispute over this agreement, this Car Rental Agreement will be interpreted by the laws of <span class="token token-empty">[Sender.Country]</span>, and any lawsuit or arbitration must be brought in the corresponding region of <span class="token token-empty">[Sender.Country]</span>. If any portion of this agreement is found to be unenforceable by a court of competent jurisdiction, the remainder of the agreement would still have full force and effect.</p></div></div>
+              <div class="page content page-5"><div class="text-block block"><h2>11. Entire agreement</h2></div><div class="text-block block" style="margin-bottom:3.19em"><p>This Car Rental Agreement constitutes the entire agreement between the Parties with respect 
+to this rental arrangement. No modification to this agreement can be made unless in writing signed by both Parties. Any notice required to be given to the other party will be made to the contact information below.</p></div><div class="row"><div class="column" style="width:93.26%"><div class="text-block block" style="margin-bottom:7.26em"><p>Date and time of vehicle pickup: &nbsp;</p></div></div><div class="column" style="width:6.74%"><div class="text-block block"><p>​</p></div></div></div><div class="row"><div class="column" style="width:50%"><div class="text-block block"><p>​</p><p>​</p><p>​</p><p>​</p><p>​</p><p class="field date-07877d70"><span class="token-input date"><span>MM / DD / YYYY</span><svg width="24px" height="24px" viewbox="0 0 24 24" fill="currentColor"><g fill-rule="evenodd"><path d="M18 19H6a1 1 0 0 1-1-1V9h14v9a1 1 0 0 1-1 1m0-15h-1V2h-2v2H9V2H7v2H6C4.346 4 3 5.346 3 7v11c0 1.654 1.346 3 3 3h12c1.654 0 3-1.346 3-3V7c0-1.654-1.346-3-3-3"></path><path d="M7 17h4v-4H7z"></path></g></svg></span></p><p class="field signature-0b24f6d7"><span class="token-input signature">Signature</span></p></div></div><div class="column" style="width:50%"><div class="text-block block"><p>​</p><p>​</p><p>​</p><p>​</p><p>​</p><p class="field date-e1ee1b74"><span class="token-input date"><span>MM / DD / YYYY</span><svg width="24px" height="24px" viewbox="0 0 24 24" fill="currentColor"><g fill-rule="evenodd"><path d="M18 19H6a1 1 0 0 1-1-1V9h14v9a1 1 0 0 1-1 1m0-15h-1V2h-2v2H9V2H7v2H6C4.346 4 3 5.346 3 7v11c0 1.654 1.346 3 3 3h12c1.654 0 3-1.346 3-3V7c0-1.654-1.346-3-3-3"></path><path d="M7 17h4v-4H7z"></path></g></svg></span></p><p class="field signature-e2780157"><span class="token-input signature">Signature</span></p></div></div></div><div class="row"><div class="column" style="width:50%"><div class="text-block block"><p>​<span class="token token-empty">[Sender.FirstName]</span><span class="token token-empty">[Sender.LastName]</span>​</p></div></div><div class="column" style="width:50%"><div class="text-block block"><p>​<span class="token token-empty">[Client.FirstName]</span><span class="token token-empty">[Client.LastName]</span></p></div></div></div></div>
+            </article>
           </div>
         </div>
       </div>
@@ -1018,6 +1521,20 @@
     </div>
 
     <script>
+      const fileMenu = document.getElementById("fileMenu");
+      const fileMenuButton = document.getElementById("fileMenuButton");
+
+      fileMenuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        fileMenu.classList.toggle("open");
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!fileMenu.contains(event.target)) {
+          fileMenu.classList.remove("open");
+        }
+      });
+
       // Toggle sidebar
       const sidebar = document.getElementById("sidebar");
       const sidebarToggle = document.getElementById("sidebarToggle");
