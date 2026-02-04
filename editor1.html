@@ -383,6 +383,48 @@
         text-transform: unset;
         background-color: transparent;
       }
+      .text-block p[contenteditable="true"],
+      .text-block h1[contenteditable="true"],
+      .text-block h2[contenteditable="true"],
+      .text-block h3[contenteditable="true"],
+      .text-block h4[contenteditable="true"],
+      .text-block h5[contenteditable="true"] {
+        outline: none;
+        cursor: text;
+      }
+      .text-block p[contenteditable="true"]:focus,
+      .text-block h1[contenteditable="true"]:focus,
+      .text-block h2[contenteditable="true"]:focus,
+      .text-block h3[contenteditable="true"]:focus,
+      .text-block h4[contenteditable="true"]:focus,
+      .text-block h5[contenteditable="true"]:focus {
+        background-color: rgba(249, 236, 192, 0.3);
+        border-radius: 2px;
+      }
+      .text-block p[contenteditable="true"]:hover,
+      .text-block h1[contenteditable="true"]:hover,
+      .text-block h2[contenteditable="true"]:hover,
+      .text-block h3[contenteditable="true"]:hover,
+      .text-block h4[contenteditable="true"]:hover,
+      .text-block h5[contenteditable="true"]:hover {
+        background-color: rgba(249, 236, 192, 0.15);
+      }
+      .text-block .token {
+        user-select: none;
+        pointer-events: none;
+      }
+      .table-cell p[contenteditable="true"] {
+        outline: none;
+        cursor: text;
+        min-height: 1.5em;
+      }
+      .table-cell p[contenteditable="true"]:focus {
+        background-color: rgba(249, 236, 192, 0.3);
+        border-radius: 2px;
+      }
+      .table-cell p[contenteditable="true"]:hover {
+        background-color: rgba(249, 236, 192, 0.15);
+      }
       .text-block h1,
       .text-block h2,
       .text-block h3,
@@ -1557,6 +1599,92 @@ to this rental arrangement. No modification to this agreement can be made unless
           sidebarToggle.textContent = "«";
         }
       });
+
+      // Make text elements editable
+      function makeTextEditable() {
+        // Find all text blocks
+        const textBlocks = document.querySelectorAll('.text-block');
+        
+        textBlocks.forEach(block => {
+          // Find all text elements (p, h1, h2, h3, h4, h5) within text blocks
+          const textElements = block.querySelectorAll('p, h1, h2, h3, h4, h5');
+          
+          textElements.forEach(element => {
+            // Skip if element contains only tokens or is empty
+            const hasOnlyTokens = element.querySelectorAll('.token').length === element.childNodes.length;
+            if (hasOnlyTokens && element.textContent.trim().length === 0) {
+              return;
+            }
+            
+            // Make element editable
+            element.setAttribute('contenteditable', 'true');
+            
+            // Prevent editing of token elements
+            const tokens = element.querySelectorAll('.token');
+            tokens.forEach(token => {
+              token.setAttribute('contenteditable', 'false');
+            });
+            
+            // Handle paste events to prevent unwanted formatting
+            element.addEventListener('paste', (e) => {
+              e.preventDefault();
+              const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+              document.execCommand('insertText', false, text);
+            });
+            
+            // Prevent accidental deletion of tokens
+            element.addEventListener('keydown', (e) => {
+              const selection = window.getSelection();
+              if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const startContainer = range.startContainer;
+                
+                // Check if cursor is at the start of a token
+                if (startContainer.nodeType === Node.TEXT_NODE) {
+                  const token = startContainer.parentElement.closest('.token');
+                  if (token && (e.key === 'Backspace' || e.key === 'Delete')) {
+                    const tokenRect = token.getBoundingClientRect();
+                    const cursorPos = range.getBoundingClientRect();
+                    if (Math.abs(cursorPos.left - tokenRect.left) < 5) {
+                      e.preventDefault();
+                    }
+                  }
+                }
+              }
+            });
+          });
+        });
+
+        // Make table cells editable
+        const tableCells = document.querySelectorAll('.table-cell p');
+        tableCells.forEach(cell => {
+          // Skip if cell contains only tokens
+          const hasOnlyTokens = cell.querySelectorAll('.token').length === cell.childNodes.length;
+          if (!hasOnlyTokens || cell.textContent.trim().length > 0) {
+            cell.setAttribute('contenteditable', 'true');
+            
+            // Prevent editing of token elements
+            const tokens = cell.querySelectorAll('.token');
+            tokens.forEach(token => {
+              token.setAttribute('contenteditable', 'false');
+            });
+            
+            // Handle paste events
+            cell.addEventListener('paste', (e) => {
+              e.preventDefault();
+              const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+              document.execCommand('insertText', false, text);
+            });
+          }
+        });
+      }
+
+      // Initialize editable text when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', makeTextEditable);
+      } else {
+        makeTextEditable();
+      }
     </script>
   </body>
 </html>
