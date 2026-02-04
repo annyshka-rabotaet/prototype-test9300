@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <!-- saved from url=(0060)https://www.pandadoc.com/free-car-rental-agreement-template/ -->
-<html lang="en-US"><style>
+<html lang="en-US"><script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const signupUrl = "../signup.html";
+    const signupButton = document.querySelector(
+      'a.ui-button.w-100[data-action="use-template"]'
+    );
+
+    if (!signupButton) {
+      return;
+    }
+
+    signupButton.setAttribute("href", signupUrl);
+
+    signupButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      window.location.href = signupUrl;
+    });
+  });
+</script><style>
 /* Hide the "AI assistant included" line */
 #template-preview .template-sidebar .mb-1em.text-unscale-16 { display: none !important; }
 

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Start a free account</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        min-height: 100vh;
+        background: #f3f5f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 16px;
+        color: #1f2a2e;
+      }
+
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 24, 32, 0.45);
+      }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        width: min(420px, 100%);
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+        padding: 28px 32px 24px;
+        text-align: center;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #1a1f24;
+        margin-bottom: 16px;
+      }
+
+      .brand-mark {
+        width: 22px;
+        height: 22px;
+        border-radius: 4px;
+        background: #1f8f6a;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      h1 {
+        font-size: 22px;
+        margin-bottom: 6px;
+      }
+
+      .subhead {
+        display: inline-block;
+        background: #eef4f3;
+        color: #1f8f6a;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 999px;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+        text-align: left;
+      }
+
+      label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        color: #6b7580;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid #d5dbe0;
+        font-size: 14px;
+      }
+
+      .password-row {
+        position: relative;
+      }
+
+      .password-row button {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: #6b7580;
+        font-size: 12px;
+      }
+
+      .primary {
+        margin-top: 6px;
+        width: 100%;
+        border: none;
+        background: #1f8f6a;
+        color: #ffffff;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .terms {
+        font-size: 11px;
+        color: #6b7580;
+        margin: 12px 0;
+      }
+
+      .terms a {
+        color: #1f8f6a;
+        text-decoration: none;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        color: #9aa3aa;
+        margin: 12px 0 10px;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: #e5e9ec;
+      }
+
+      .social {
+        display: grid;
+        gap: 8px;
+      }
+
+      .social button {
+        width: 100%;
+        border: 1px solid #d5dbe0;
+        background: #f9fafb;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .footer {
+        margin-top: 16px;
+        font-size: 12px;
+        color: #6b7580;
+      }
+
+      .footer a {
+        color: #1f8f6a;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="backdrop" aria-hidden="true"></div>
+    <div class="card" role="dialog" aria-labelledby="signup-title">
+      <div class="brand">
+        <span class="brand-mark">pd</span>
+        PandaDoc
+      </div>
+      <h1 id="signup-title">Start a free account</h1>
+      <span class="subhead">No credit card required</span>
+      <form>
+        <div class="field">
+          <label for="email">Enter your work email *</label>
+          <input id="email" type="email" placeholder="name@company.com" required />
+        </div>
+        <div class="field password-row">
+          <label for="password">Create a password *</label>
+          <input id="password" type="password" placeholder="********" required />
+          <button type="button" aria-label="Show password">Show</button>
+        </div>
+        <button class="primary" type="submit">Start using PandaDoc</button>
+      </form>
+      <p class="terms">
+        By signing up to use PandaDoc, you agree to our
+        <a href="#" aria-label="Master Services Agreement">Master Services Agreement</a>,
+        <a href="#" aria-label="DPA">DPA</a> and
+        <a href="#" aria-label="Privacy Notice">Privacy Notice</a>.
+      </p>
+      <div class="divider">or</div>
+      <div class="social">
+        <button type="button">Google</button>
+        <button type="button">LinkedIn</button>
+      </div>
+      <div class="footer">
+        Already have an account? <a href="#">Log in</a>
+      </div>
+    </div>
+  </body>
+</html>
