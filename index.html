@@ -254,6 +254,11 @@
         display: grid;
         gap: 24px;
         padding-top: 12px;
+        max-width: 66%;
+      }
+
+      .results-content.is-clickable {
+        cursor: pointer;
       }
 
       .section-title {
@@ -303,9 +308,19 @@
 
       .result-item {
         display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 16px;
-        align-items: start;
+        gap: 10px;
+      }
+
+      .results-content.is-clickable .result-item {
+        transition: background 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 12px;
+        padding: 12px;
+        margin: -12px;
+      }
+
+      .results-content.is-clickable .result-item:hover {
+        background: #f8f9fa;
+        box-shadow: 0 1px 2px rgba(60, 64, 67, 0.12);
       }
 
       .result-main {
@@ -316,14 +331,14 @@
       .result-meta {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         color: #5f6368;
         font-size: 12px;
       }
 
       .result-logo {
-        width: 24px;
-        height: 24px;
+        width: 26px;
+        height: 26px;
         border-radius: 50%;
         background: #34a853;
         color: #ffffff;
@@ -337,21 +352,45 @@
 
       .result-link {
         color: #202124;
-        font-weight: 600;
+        font-weight: 400;
+      }
+
+      .result-breadcrumbs {
+        color: #5f6368;
+        font-size: 12px;
       }
 
       .result-thumb {
-        width: 96px;
-        height: 96px;
-        border-radius: 12px;
-        border: 1px solid #e0e0e0;
-        object-fit: cover;
+        display: none;
       }
 
       .result-title {
         color: #1a0dab;
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 400;
+      }
+
+      .result-item:hover .result-title {
+        text-decoration: underline;
+      }
+
+      .result-rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #5f6368;
+      }
+
+      .stars {
+        display: inline-flex;
+        gap: 2px;
+        font-size: 14px;
+        color: #f9ab00;
+      }
+
+      .stars span.inactive {
+        color: #dadce0;
       }
 
       .result-url {
@@ -606,19 +645,86 @@
             <div class="result-meta">
               <span class="result-logo">pd</span>
               <span class="result-link">PandaDoc</span>
+              <span class="result-breadcrumbs">https://www.pandadoc.com › Templates › Agreements</span>
             </div>
-            <div class="result-title">Free Car Rental Agreement Template for Download (Doc, ...</div>
-            <div class="result-url">https://www.pandadoc.com</div>
+            <div class="result-title">
+              Free Car Rental Agreement Template for Download (Doc, ...
+            </div>
             <div class="result-snippet">
-              This car rental agreement template is useful to any car rental, rent-a-car, or other
-              vehicle rental service, and now you can save time and money getting ...
+              Protect you and your customers with this <strong>free car rental agreement template</strong>.
+              Create, send, and eSign documents in a flash.
+            </div>
+            <div class="result-rating">
+              <span>4,0</span>
+              <span class="stars" aria-hidden="true">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="inactive">★</span>
+              </span>
+              <span>(86)</span>
             </div>
           </div>
-          <img
-            class="result-thumb"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpGwMMsYbYt-20eW_4dYT_WRYICqpfzCGou4-ucsk&usqp=CAE&s"
-            alt="Car rental agreement template preview"
-          />
+        </section>
+        <section class="result-item">
+          <div class="result-main">
+            <div class="result-meta">
+              <span class="result-logo">pd</span>
+              <span class="result-link">PandaDoc</span>
+              <span class="result-breadcrumbs">https://www.pandadoc.com › Templates › Agreements</span>
+            </div>
+            <div class="result-title">Car Rental Agreement Template (Free Download)</div>
+            <div class="result-snippet">
+              Use this template to draft a clear rental agreement, define mileage limits, and protect
+              both parties with simple, ready-to-sign terms.
+            </div>
+            <div class="result-rating">
+              <span>4,5</span>
+              <span class="stars" aria-hidden="true">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </span>
+              <span>(112)</span>
+            </div>
+          </div>
+        </section>
+        <section class="result-item">
+          <div class="result-main">
+            <div class="result-meta">
+              <span class="result-logo">pd</span>
+              <span class="result-link">PandaDoc</span>
+              <span class="result-breadcrumbs">https://www.pandadoc.com › Templates › Agreements</span>
+            </div>
+            <div class="result-title">Vehicle Rental Agreement Template</div>
+            <div class="result-snippet">
+              Create a professional car rental contract in minutes. Customize insurance, payment,
+              and return conditions for your clients.
+            </div>
+            <div class="result-rating">
+              <span>4,2</span>
+              <span class="stars" aria-hidden="true">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="inactive">★</span>
+              </span>
+              <span>(64)</span>
+            </div>
+          </div>
+        </section>
+        <section class="result-item">
+          <div class="result-main">
+            <div class="result-meta">
+              <span class="result-logo">pd</span>
+              <span class="result-link">PandaDoc</span>
+              <span class="result-breadcrumbs">https://www.pandadoc.com › Templates › Agreements</span>
+            </div>
+            <div class="result-title">Free Car Rental Contract Sample &amp; Template</div>
+            <div class="result-snippet">
+              Download a free car rental agreement sample and edit it online. Send, sign, and track
+              in one place.
+            </div>
+            <div class="result-rating">
+              <span>4,1</span>
+              <span class="stars" aria-hidden="true">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="inactive">★</span>
+              </span>
+              <span>(39)</span>
+            </div>
+          </div>
         </section>
       </div>
     </section>
@@ -631,6 +737,7 @@
       const homePage = document.querySelector(".page");
       const resultsPage = document.querySelector(".results-page");
       const resultsInput = document.querySelector(".results-input");
+      const resultsContent = document.querySelector(".results-content");
 
       form.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -660,6 +767,14 @@
       });
 
       input.focus();
+
+      if (resultsContent) {
+        resultsContent.classList.add("is-clickable");
+        resultsContent.addEventListener("click", () => {
+          window.location.href =
+            "Template page/Free Car Rental Agreement Template for Download (Doc, Word), Vehicle Contract Sample - 2023.html";
+        });
+      }
     </script>
   </body>
 </html>
