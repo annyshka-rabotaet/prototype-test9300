@@ -342,3 +342,67 @@
 .stars span.inactive {
   color: #dadce0;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-input {
+    padding: 12px 100px 12px 48px;
+    font-size: 15px;
+  }
+
+  .results-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .logo-small {
+    display: none;
+  }
+
+  .results-content {
+    max-width: 100%;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-page {
+    padding: 32px 16px;
+    gap: 20px;
+  }
+
+  .search-input {
+    padding: 10px 80px 10px 40px;
+    font-size: 14px;
+  }
+
+  .search-icon {
+    left: 12px;
+  }
+
+  .mic-icon {
+    right: 56px;
+  }
+
+  .ai-mode {
+    right: 8px;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .results-page {
+    padding: 12px 12px 60px;
+  }
+
+  .result-breadcrumbs {
+    display: none;
+  }
+}
