@@ -709,7 +709,8 @@
     padding: var(--spacing-s2);
     gap: var(--spacing-s1);
     flex-shrink: 0;
-    overflow-x: visible;
+    overflow: visible;
+    z-index: 300;
   }
 
   /* Top row: buttons on the right, title on the left */

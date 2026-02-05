@@ -18,7 +18,7 @@
   .document-editor {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .editor-content {
