@@ -1,31 +1,24 @@
 import React, { useState } from 'react'
 import GoogleSearch from './components/GoogleSearch'
 import TemplatePage from './components/TemplatePage'
-import SignupPage from './components/SignupPage'
 import DocumentEditor from './components/DocumentEditor'
 
+// PROTOTYPE V1 — Minimal: Google → Template → Editor (no Signup)
 function App() {
-  const [currentPage, setCurrentPage] = useState('search') // 'search' | 'template' | 'signup' | 'editor'
+  const [currentPage, setCurrentPage] = useState('search') // 'search' | 'template' | 'editor'
 
   const handleResultClick = () => {
     setCurrentPage('template')
   }
 
   const handleUseTemplate = () => {
-    setCurrentPage('signup')
-  }
-
-  const handleSignup = () => {
-    setCurrentPage('editor')
+    setCurrentPage('editor') // Skip signup, go directly to editor
   }
 
   // Render current page
   switch (currentPage) {
     case 'template':
       return <TemplatePage onUseTemplate={handleUseTemplate} />
-    
-    case 'signup':
-      return <SignupPage onSignup={handleSignup} />
     
     case 'editor':
       return <DocumentEditor />
