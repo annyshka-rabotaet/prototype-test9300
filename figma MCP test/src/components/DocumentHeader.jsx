@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Menu, ChevronDown, Folder, CloudCheck, Help } from './icons'
 import './DocumentHeader.css'
 
-const DocumentHeader = () => {
+const DocumentHeader = ({ autoOpenSend = false } = {}) => {
   const [isInviteOpen, setIsInviteOpen] = useState(false)
   const [isReviewOpen, setIsReviewOpen] = useState(false)
   const [isFileMenuOpen, setIsFileMenuOpen] = useState(false)
@@ -13,7 +13,10 @@ const DocumentHeader = () => {
   const [fieldSuggestions, setFieldSuggestions] = useState(false)
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [showCompletionDialog, setShowCompletionDialog] = useState(false)
+  const [showDownloadNudge, setShowDownloadNudge] = useState(false)
+  const [showCertificatePreview, setShowCertificatePreview] = useState(false)
   const [successMessage, setSuccessMessage] = useState({ title: '', description: '' })
+  const [successAction, setSuccessAction] = useState(null)
   const inviteRef = useRef(null)
   const reviewRef = useRef(null)
   const fileMenuRef = useRef(null)
@@ -47,12 +50,44 @@ const DocumentHeader = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  useEffect(() => {
+    if (!autoOpenSend) return
+    const t = setTimeout(() => setIsReviewOpen(true), 350)
+    return () => clearTimeout(t)
+  }, [autoOpenSend])
+
+  const openSend = () => {
+    setIsFileMenuOpen(false)
+    setIsInviteOpen(false)
+    setIsReviewOpen(true)
+  }
+
+  const handleDownloadClick = () => {
+    setIsFileMenuOpen(false)
+    setShowDownloadNudge(true)
+  }
+
+  const proceedDownload = () => {
+    setShowDownloadNudge(false)
+    setSuccessMessage({
+      title: 'Downloaded as PDF 📄',
+      description: 'Tip: downloaded files won’t include a signing certificate or audit trail.'
+    })
+    setSuccessAction({ label: 'Send for signature — free', onClick: openSend })
+    setShowSuccessDialog(true)
+    setTimeout(() => {
+      setShowSuccessDialog(false)
+      setSuccessAction(null)
+    }, 4500)
+  }
+
   const handleRecipientInvite = () => {
     setIsInviteOpen(false)
     setSuccessMessage({
       title: 'Recipient added! 👤',
       description: 'They can now sign the document'
     })
+    setSuccessAction(null)
     setShowSuccessDialog(true)
     setTimeout(() => {
       setShowSuccessDialog(false)
@@ -66,6 +101,7 @@ const DocumentHeader = () => {
       title: 'Email sent successfully! 📧',
       description: 'Your document has been sent to all recipients'
     })
+    setSuccessAction(null)
     setShowSuccessDialog(true)
     setTimeout(() => {
       setShowSuccessDialog(false)
@@ -79,6 +115,7 @@ const DocumentHeader = () => {
       title: 'Link copied! 🔗',
       description: 'Share this link with anyone who needs to sign'
     })
+    setSuccessAction(null)
     setShowSuccessDialog(true)
     setTimeout(() => {
       setShowSuccessDialog(false)
@@ -212,11 +249,14 @@ const DocumentHeader = () => {
                   
                   <div className="file-menu-divider" />
                   
-                  <button className="file-menu-item has-submenu">
+                  <button className="file-menu-item has-submenu" onClick={handleDownloadClick}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                     </svg>
-                    <span>Download</span>
+                    <span>
+                      Download
+                      <span className="file-menu-item-subtext">No certificate / audit trail</span>
+                    </span>
                     <svg className="submenu-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
                     </svg>
@@ -552,12 +592,37 @@ const DocumentHeader = () => {
             className="btn-primary"
             onClick={() => setIsReviewOpen(!isReviewOpen)}
           >
-            <span>Review and send</span>
+            <span>Send for signature — free</span>
             <ChevronDown />
           </button>
           
           {isReviewOpen && (
             <div className="dropdown-menu">
+              <div className="send-trust-panel">
+                <div className="send-trust-title">Trusted, legally valid eSignatures</div>
+                <div className="send-trust-pills">
+                  <span className="send-pill">Signing certificate</span>
+                  <span className="send-pill">Audit trail</span>
+                  <span className="send-pill">Secure link</span>
+                </div>
+                <div className="send-steps">
+                  <div className="send-step">
+                    <span className="send-step-num">1</span>
+                    <span>Recipient gets a secure link</span>
+                  </div>
+                  <div className="send-step">
+                    <span className="send-step-num">2</span>
+                    <span>Signs online in minutes</span>
+                  </div>
+                  <div className="send-step">
+                    <span className="send-step-num">3</span>
+                    <span>You receive signed PDF + certificate</span>
+                  </div>
+                </div>
+                <button className="send-cert-link" onClick={() => setShowCertificatePreview(true)}>
+                  View sample signing certificate
+                </button>
+              </div>
               <button className="dropdown-item" onClick={handleSendByEmail}>
                 <div className="dropdown-item-content">
                   <div className="dropdown-item-icon">
@@ -606,6 +671,21 @@ const DocumentHeader = () => {
           <div className="success-content">
             <h3 className="success-title">{successMessage.title}</h3>
             <p className="success-description">{successMessage.description}</p>
+            {successAction && (
+              <button
+                className="success-action-btn"
+                onClick={() => {
+                  try {
+                    successAction.onClick?.()
+                  } finally {
+                    setShowSuccessDialog(false)
+                    setSuccessAction(null)
+                  }
+                }}
+              >
+                {successAction.label}
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -649,6 +729,56 @@ const DocumentHeader = () => {
             <button className="completion-btn" onClick={() => setShowCompletionDialog(false)}>
               Amazing! 🚀
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Download Nudge */}
+      {showDownloadNudge && (
+        <div className="modal-overlay" onClick={() => setShowDownloadNudge(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-title">Before you download…</div>
+            <div className="modal-body">
+              Is this document meant to be signed by someone else?
+              <div className="modal-note">
+                If yes, sending from PandaDoc adds a signing certificate and audit trail.
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button className="modal-btn modal-btn-primary" onClick={() => { setShowDownloadNudge(false); openSend() }}>
+                Yes — send for signature
+              </button>
+              <button className="modal-btn" onClick={proceedDownload}>
+                No — just download
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Certificate Preview */}
+      {showCertificatePreview && (
+        <div className="modal-overlay" onClick={() => setShowCertificatePreview(false)}>
+          <div className="modal-card certificate-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-title">Sample signing certificate</div>
+            <div className="certificate-preview">
+              <div className="certificate-row"><strong>Document:</strong> Car Rental Agreement</div>
+              <div className="certificate-row"><strong>Status:</strong> Completed</div>
+              <div className="certificate-row"><strong>Audit trail:</strong> View, sign, and timestamp events recorded</div>
+              <div className="certificate-row"><strong>Signers:</strong> Sender + Recipient</div>
+              <div className="certificate-row"><strong>Hash:</strong> Generated on completion</div>
+              <div className="certificate-footnote">
+                The signing certificate is included when you send for signature.
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button className="modal-btn modal-btn-primary" onClick={() => { setShowCertificatePreview(false); openSend() }}>
+                Send for signature — free
+              </button>
+              <button className="modal-btn" onClick={() => setShowCertificatePreview(false)}>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
