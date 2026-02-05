@@ -63,6 +63,7 @@
   height: calc(100% - 60px);
   overflow-y: auto;
   padding: 20px;
+  padding-right: 400px;
   background-color: #f8f9fa;
   position: relative;
   transition: background-color 0.2s ease;
