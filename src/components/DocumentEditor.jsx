@@ -12,7 +12,7 @@ const DocumentEditor = () => {
 
   return (
     <div className="document-editor">
-      <DocumentHeader autoOpenSend />
+      <DocumentHeader />
       <DocumentEditingTools />
       
       <div className="editor-content">
