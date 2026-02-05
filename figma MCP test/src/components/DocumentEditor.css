@@ -1,0 +1,14 @@
+.document-editor {
+  width: 1440px;
+  height: 800px;
+  background-color: var(--color-document-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.editor-content {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 104px);
+  margin-top: 104px;
+}
