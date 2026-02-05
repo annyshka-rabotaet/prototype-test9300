@@ -21,6 +21,20 @@ const DocumentHeader = () => {
   const insertMenuRef = useRef(null)
   const viewMenuRef = useRef(null)
 
+  // When any dropdown is open, temporarily remove overflow:hidden on parent
+  // so the dropdown can render above the editor panels
+  useEffect(() => {
+    const editor = document.querySelector('.document-editor')
+    if (!editor) return
+    const anyOpen = isFileMenuOpen || isEditMenuOpen || isInsertMenuOpen || isViewMenuOpen || isInviteOpen || isReviewOpen
+    if (anyOpen) {
+      editor.style.overflow = 'visible'
+    } else {
+      editor.style.overflow = ''
+    }
+    return () => { editor.style.overflow = '' }
+  }, [isFileMenuOpen, isEditMenuOpen, isInsertMenuOpen, isViewMenuOpen, isInviteOpen, isReviewOpen])
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inviteRef.current && !inviteRef.current.contains(event.target)) {

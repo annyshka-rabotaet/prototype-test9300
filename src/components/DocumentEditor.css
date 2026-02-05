@@ -18,7 +18,7 @@
   .document-editor {
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .editor-content {
@@ -29,7 +29,5 @@
     height: auto;
     flex: 1;
     min-height: 0;
-    position: relative;
-    z-index: 1;
   }
 }
