@@ -4,6 +4,7 @@ import TemplatePage from './components/TemplatePage'
 import SignupPage from './components/SignupPage'
 import DocumentEditor from './components/DocumentEditor'
 
+// PROTOTYPE V2 — Standard: Google → Template → Signup → Editor
 function App() {
   const [currentPage, setCurrentPage] = useState('search') // 'search' | 'template' | 'signup' | 'editor'
 
