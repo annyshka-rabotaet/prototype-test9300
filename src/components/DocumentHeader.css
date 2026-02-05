@@ -710,7 +710,7 @@
     gap: var(--spacing-s1);
     flex-shrink: 0;
     overflow: visible;
-    z-index: 300;
+    z-index: 9999;
   }
 
   /* Top row: buttons on the right, title on the left */
@@ -731,16 +731,11 @@
     display: flex !important;
     order: 3;
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    overflow: visible;
+    flex-wrap: wrap;
     padding: 4px 0;
     border-top: 1px solid var(--color-opacity-active);
     margin-top: 4px;
-  }
-
-  .menu-bar::-webkit-scrollbar {
-    display: none;
   }
 
   .document-title {
