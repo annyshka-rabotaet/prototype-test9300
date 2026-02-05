@@ -11,6 +11,7 @@
   justify-content: space-between;
   padding: var(--spacing-s2) var(--spacing-s4);
   z-index: 200;
+  overflow-x: auto;
 }
 
 .header-left {
@@ -694,4 +695,81 @@
 .completion-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .document-header {
+    padding: var(--spacing-s2) var(--spacing-s2);
+    gap: var(--spacing-s2);
+  }
+
+  .menu-bar {
+    display: none;
+  }
+
+  .document-title {
+    font-size: 14px;
+  }
+
+  .status-badge {
+    display: none;
+  }
+
+  .header-right {
+    gap: var(--spacing-s1);
+  }
+
+  .btn-secondary span,
+  .btn-primary span {
+    font-size: 12px;
+  }
+
+  .success-dialog {
+    right: 12px;
+    left: 12px;
+    min-width: auto;
+  }
+
+  .completion-dialog {
+    margin: 16px;
+    padding: 32px 24px;
+  }
+
+  .completion-title {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .completion-stats {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-left {
+    gap: var(--spacing-s1);
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .document-title-section {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .document-title {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-secondary,
+  .btn-primary {
+    padding: 6px 8px;
+    font-size: 12px;
+    height: 28px;
+  }
 }

@@ -116,3 +116,27 @@
 .toolbar-dropdown-group .toolbar-icon-btn:hover {
   background-color: transparent;
 }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .document-editing-tools {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .document-editing-tools::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .editing-mode-btn {
+    padding-left: var(--spacing-s2);
+    padding-right: var(--spacing-s1);
+  }
+
+  .editing-mode-text {
+    font-size: 12px;
+  }
+}

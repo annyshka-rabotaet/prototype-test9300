@@ -42,3 +42,10 @@
   padding-right: var(--spacing-s1);
   justify-content: flex-end;
 }
+
+/* Responsive: hide sidebar togglers on small screens */
+@media (max-width: 900px) {
+  .sidebar-toggler {
+    display: none;
+  }
+}
